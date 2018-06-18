@@ -57,6 +57,6 @@ export default {
 
 <style lang="scss" scoped>
 .carousel-title{
-    padding-top: 240px;
+    padding-top: 200px;
 }
 </style>

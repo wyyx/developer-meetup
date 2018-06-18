@@ -40,7 +40,7 @@ export default {
       emailRules: [
         v => !!v || 'Email is required',
         v => {
-          let regex = RegExp(/^[a-zA-Z0-9\.]+@[a-zA-Z0-9]+(\-)?[a-zA-Z0-9]+(\.)?[a-zA-Z0-9]{2,6}?\.[a-zA-Z]{2,6}$/)
+          let regex = RegExp(/^([a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]{1,64}@([a-zA-Z0-9-]+.[a-zA-Z0-9-]{2,}){1,255}){1,320}$/)
           if (v && !regex.test(v)) {
             return 'Email address is not valid'
           }
@@ -66,12 +66,12 @@ export default {
 
       return error
     },
-    user() {
+    isAuthenticated() {
       return this.$store.getters.user
     }
   },
   watch: {
-    user(value) {
+    isAuthenticated(value) {
       if (value) {
         this.$router.push('/')
       }

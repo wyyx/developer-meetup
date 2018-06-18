@@ -15,20 +15,18 @@
           </v-card-title>
           <v-form ref="form" v-model="valid">
             <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <v-flex xs12>
-                    <v-text-field v-model="title" :rules="titleRules" :counter="50" label="Title" name="title" required>
-                    </v-text-field>
-                  </v-flex>
-                  <v-flex xs12>
-                    <v-text-field v-model="location" :rules="locationRules" label="Location" name="location" required></v-text-field>
-                  </v-flex>
-                  <v-flex xs12>
-                    <v-text-field rows="3" :multi-line="true" v-model="description" :rules="descriptionRules" label="Description" name="description" required></v-text-field>
-                  </v-flex>
-                </v-layout>
-              </v-container>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-text-field v-model="title" :rules="titleRules" :counter="50" label="Title" name="title" required>
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field v-model="location" :rules="locationRules" label="Location" name="location" required></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field rows="3" :multi-line="true" v-model="description" :rules="descriptionRules" label="Description" name="description" required></v-text-field>
+                </v-flex>
+              </v-layout>
               <small>*indicates required field</small>
             </v-card-text>
             <v-card-actions>
@@ -80,7 +78,6 @@ export default {
           description: this.description.trim(),
         }
         this.$store.dispatch('updateMeetup', updateMeetupData)
-        // this.$router.push('/meetups')
       }
     },
     clear() {

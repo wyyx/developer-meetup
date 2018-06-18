@@ -69,12 +69,12 @@ export default {
 
       return error
     },
-    user() {
+    isAuthenticated() {
       return this.$store.getters.user
     }
   },
   watch: {
-    user(value) {
+    isAuthenticated(value) {
       if (value) {
         this.$router.push('/')
       }

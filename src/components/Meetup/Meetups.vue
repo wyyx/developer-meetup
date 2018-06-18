@@ -1,11 +1,11 @@
 <template>
   <v-container>
-    <v-layout>
+    <v-layout v-if="isLoading">
       <v-flex class="text-xs-center pt-4">
-        <v-progress-circular v-if="isLoading" indeterminate color="primary"></v-progress-circular>
+        <v-progress-circular indeterminate color="primary"></v-progress-circular>
       </v-flex>
     </v-layout>
-    <v-layout row wrap :justify-center="true" v-if="!isLoading">
+    <v-layout row wrap :justify-center="true" v-if="!isLoading" class="pt-4">
       <v-flex xs10 v-for="(item, i) in meetups" mb-3 :key="i">
         <v-card>
           <v-container>

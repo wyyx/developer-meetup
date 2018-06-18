@@ -1,6 +1,5 @@
 <template>
   <v-container>
-
     <v-layout :justify-center="true">
       <v-flex xs12 md9 lg8 xl6>
         <h2>Create New Meetup</h2>
@@ -17,21 +16,15 @@
             <v-flex class="pt-3">
               <v-menu ref="dateMenu" :close-on-content-click="false" v-model="dateMenu" transition="scale-transition" :nudge-right="40" :return-value.sync="date">
                 <v-text-field slot="activator" :value="onlyDate" label="Picker a date" prepend-icon="event" readonly></v-text-field>
-                <v-card>
-                  <v-layout>
-                    <v-flex xs12>
-                      <v-date-picker v-model="date" type="month" no-title scrollable>
-                        <v-spacer></v-spacer>
-                      </v-date-picker>
-                    </v-flex>
-                  </v-layout>
-                  <v-layout>
-                    <v-flex class="text-xs-right">
+                <v-layout>
+                  <v-flex xs12>
+                    <v-date-picker v-model="date" no-title scrollable>
+                      <v-spacer></v-spacer>
                       <v-btn flat color="primary" @click="dateMenu = false">Cancel</v-btn>
                       <v-btn flat color="primary" @click="$refs.dateMenu.save(date)">OK</v-btn>
-                    </v-flex>
-                  </v-layout>
-                </v-card>
+                    </v-date-picker>
+                  </v-flex>
+                </v-layout>
               </v-menu>
             </v-flex>
             <v-flex class="pt-3">
@@ -41,13 +34,11 @@
                 <v-card>
                   <v-layout>
                     <v-flex xs12>
-                      <v-time-picker :format="'24hr'" v-model="time"></v-time-picker>
-                    </v-flex>
-                  </v-layout>
-                  <v-layout>
-                    <v-flex class="text-xs-right">
-                      <v-btn flat color="primary" @click="timeMenu = false">Cancel</v-btn>
-                      <v-btn flat color="primary" @click="$refs.timeMenu.save(time)">OK</v-btn>
+                      <v-time-picker :format="'24hr'" v-model="time">
+                        <v-spacer></v-spacer>
+                        <v-btn flat color="primary" @click="timeMenu = false">Cancel</v-btn>
+                        <v-btn flat color="primary" @click="$refs.timeMenu.save(time)">OK</v-btn>
+                      </v-time-picker>
                     </v-flex>
                   </v-layout>
                 </v-card>
@@ -137,7 +128,7 @@ export default {
         v => !!v || 'Description is required',
         v => !!v && !!v.trim() || 'Description must not be white space'
       ],
-      date: moment().format('YYYY-MM-D HH:mm:ss'),
+      date: moment().format('YYYY-MM-D'),
       time: '00:00',
       radios: 'upload',
       uploadedImageUrl: '',
@@ -163,6 +154,9 @@ export default {
     onlyTime() {
       return moment(this.dateAndTime).format('HH:mm')
     },
+    isAuthenticated() {
+      return this.$store.getters.user
+    },
     user() {
       return this.$store.getters.user
     },
@@ -177,7 +171,7 @@ export default {
     }
   },
   watch: {
-    user(value) {
+    isAuthenticated(value) {
       if (!value) {
         this.$router.push('/')
       }

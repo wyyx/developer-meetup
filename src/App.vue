@@ -10,12 +10,12 @@
             <v-list-tile-title>{{ item.title }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="onLogoff" v-if="user">
+        <v-list-tile @click="onSignOut" v-if="isAuthenticated">
           <v-list-tile-action>
-            <v-icon>exit_to_app</v-icon>
+            <v-icon>power_settings_new</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Log off</v-list-tile-title>
+            <v-list-tile-title>Sign Out</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -31,10 +31,23 @@
           <v-icon class="pr-1">{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
-        <v-btn flat @click="onLogoff" v-if="user">
-          <v-icon class="pr-1">exit_to_app</v-icon>
-          Log Off
-        </v-btn>
+        <v-menu offset-y v-if="isAuthenticated" min-width="200">
+          <v-btn slot="activator" flat style="text-transform: none;">
+            <v-icon class="pr-1">account_circle</v-icon> {{ user.email }}
+          </v-btn>
+          <v-list>
+            <v-list-tile to="/profile">
+              Profile
+            </v-list-tile>
+            <v-list-tile to="/registered-meetups">
+              My Registered Meetups
+            </v-list-tile>
+            <v-list-tile @click="onSignOut">
+              <v-icon>power_settings_new</v-icon>
+              <span class="pl-2">Sign Out</span>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
@@ -48,45 +61,45 @@
 </template>
 
 <script>
-  import * as firebase from 'firebase'
+import * as firebase from 'firebase'
 
-  export default {
-    data() {
-      return {
-        sideNav: false,
-      }
+export default {
+  data() {
+    return {
+      sideNav: false,
+    }
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.user
     },
-    computed: {
-      user() {
-        return this.$store.getters.user
-      },
-      isSignedIn() {
-        return this.$store.getters.user
-      },
-      menuItems() {
-        if (this.isSignedIn) {
-          return [
-            {icon: 'supervisor_account', title: 'View meetups', link: '/meetups'},
-            {icon: 'room', title: 'Organize meetup', link: '/meetups/new'},
-            {icon: 'person', title: 'Profile', link: '/profile'},
-          ]
-        } else {
-          return [
-            {icon: 'face', title: 'Sign up', link: '/signup'},
-            {icon: 'lock_open', title: 'Sign in', link: '/signin'},
-          ]
-        }
+    user() {
+      return this.$store.getters.user
+    },
+    menuItems() {
+      if (this.isAuthenticated) {
+        return [
+          { icon: 'supervisor_account', title: 'View meetups', link: '/meetups' },
+          { icon: 'room', title: 'Organize meetup', link: '/meetups/new' },
+          // { icon: 'person', title: 'Profile', link: '/profile' },
+        ]
+      } else {
+        return [
+          { icon: 'face', title: 'Sign up', link: '/signup' },
+          { icon: 'lock_open', title: 'Sign in', link: '/signin' },
+        ]
+      }
 
-      }
-    },
-    methods: {
-      onLogoff() {
-        firebase.auth().signOut()
-        this.$store.dispatch('signOut')
-      }
-    },
-    name: 'App'
-  }
+    }
+  },
+  methods: {
+    onSignOut() {
+      firebase.auth().signOut()
+      this.$store.dispatch('signOut')
+    }
+  },
+  name: 'App'
+}
 </script>
 <style lang="scss" scoped>
 
